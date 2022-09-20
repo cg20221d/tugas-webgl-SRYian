@@ -124,11 +124,41 @@ function main(params) {
     -0.11, -0.43, -0.11, -0.47, -0.08, -0.47, -0.08, -0.6, -0.11, -0.6, -0.11,
     -0.64, -0.14, -0.64, -0.14, -0.67, -0.33, -0.67, -0.33, -0.64, -0.36, -0.64,
     -0.36, -0.6, -0.39, -0.6, -0.39, -0.47, -0.36, -0.47, -0.36, -0.43, -0.39,
-    -0.43, -0.39, -0.3, -0.36, -0.3,
+    -0.43, -0.39, -0.3,
   ];
-  let number8bolong1 = [];
-  let number8bolong2 = [];
+  let number8bolong1 = [
+    -0.31, -0.34, -0.28, -0.34, -0.28, -0.31, -0.18, -0.31, -0.18, -0.34, -0.15,
+    -0.34, -0.15, -0.38, -0.18, -0.38, -0.18, -0.41, -0.28, -0.41, -0.28, -0.38,
+    -0.31, -0.38, -0.28, -0.34,
+  ];
+  let number8bolong2 = [
+    -0.31, -0.52, -0.28, -0.52, -0.28, -0.49, -0.18, -0.49, -0.18, -0.52, -0.15,
+    -0.52, -0.15, -0.56, -0.18, -0.56, -0.18, -0.59, -0.28, -0.59, -0.28, -0.56,
+    -0.31, -0.56,
+  ];
+  let number0 = [
+    0.08, -0.3, 0.11, -0.3, 0.11, -0.27, 0.14, -0.27, 0.14, -0.24, 0.33, -0.24,
+    0.33, -0.27, 0.36, -0.27, 0.36, -0.3, 0.39, -0.3, 0.39, -0.43, 0.36, -0.43,
+    0.36, -0.47, 0.39, -0.47, 0.39, -0.6, 0.36, -0.6, 0.36, -0.64, 0.33, -0.64,
+    0.33, -0.67, 0.14, -0.67, 0.14, -0.64, 0.11, -0.64, 0.11, -0.6, 0.08, -0.6,
+    0.08, -0.47, 0.11, -0.47, 0.11, -0.43, 0.08, -0.43,
+  ];
+  let number0bolong1 = [
+    0.18, -0.31, 0.29, -0.31, 0.29, -0.34, 0.31, -0.34, 0.31, -0.36, 0.26,
+    -0.36, 0.26, -0.39, 0.23, -0.39, 0.23, -0.42, 0.2, -0.42, 0.2, -0.45, 0.17,
+    -0.45, 0.17, -0.48, 0.15, -0.48, 0.15, -0.34, 0.18, -0.34,
+  ];
+  let number0bolong2 = [
+    0.31, -0.42, 0.31, -0.56, 0.28, -0.56, 0.28, -0.59, 0.18, -0.59, 0.18,
+    -0.56, 0.15, -0.56, 0.15, -0.54, 0.2, -0.54, 0.2, -0.51, 0.23, -0.51, 0.23,
+    -0.48, 0.26, -0.48, 0.26, -0.45, 0.29, -0.45, 0.29, -0.42,
+  ];
   poin = poin.concat(number8);
+  poin = poin.concat(number8bolong1);
+  poin = poin.concat(number8bolong2);
+  poin = poin.concat(number0);
+  poin = poin.concat(number0bolong1);
+  poin = poin.concat(number0bolong2);
   console.log("test2 " + poin.length + " " + poin.length / 8);
   let vertices = [];
   let buffer = gl.createBuffer();
@@ -142,7 +172,8 @@ function main(params) {
     void main(){
        float x = aPosition.x;
        float y = aPosition.y;
-       gl_PointSize = 4.0;
+       gl_PointSize = 5.0;
+      //  gl_LineWidth = 4.0;
        gl_Position = vec4( x, y, 0.0, 1.0);
        //also works like aPossition.xy
     }`;
@@ -195,7 +226,13 @@ function main(params) {
     // console.table(poin);
     gl.drawArrays(gl.TRIANGLE_FAN, index, 4);
   }
-  gl.drawArrays(gl.LINE_STRIP, 176, 29);
+  // draw everything else(the 80)
+  gl.drawArrays(gl.LINE_LOOP, 176, 28);
+  gl.drawArrays(gl.LINE_LOOP, 205, 12);
+  gl.drawArrays(gl.LINE_LOOP, 218, 12);
+  gl.drawArrays(gl.LINE_LOOP, 230, 28);
+  gl.drawArrays(gl.LINE_LOOP, 258, 15);
+  gl.drawArrays(gl.LINE_LOOP, 274, 16);
 
   // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
   // gl.POINTS

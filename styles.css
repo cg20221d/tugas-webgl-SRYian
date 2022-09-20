@@ -8,3 +8,12 @@
     --bg-secondary:#141418;
     --transition-speed:600ms;
 }
+.canvas{
+    border-radius: 10rem;
+}
+.container{
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
