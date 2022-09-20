@@ -4,16 +4,27 @@
     font-family: 'Open Sans', sans-serif;
     --text-primary:#b6b6b6;
     --text-secondary:#ececec;
-    --bg-primary:#23232e;
+    --bg-primary:#ebebcb;
     --bg-secondary:#141418;
     --transition-speed:600ms;
 }
-.canvas{
-    border-radius: 10rem;
+.round{
+    border-radius: 3rem;
+    border: 0.25rem solid #ffffff;
+    /* padding: 1rem; */
 }
 .container{
-    background-color: antiquewhite;
+    background-color: var(--bg-primary);
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 3rem;
+}
+
+.title{
+    border: 0.25rem solid #ffffff;
+    color: white;
+    font-weight: 900;
+    padding: 1rem;
+    background-color: rgb(49, 38, 37);
 }
