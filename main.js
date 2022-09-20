@@ -4,30 +4,132 @@ function main(params) {
 
   //   note:pakai backtick untuk multiple lines
 
-  // decalre array untuk tiga titik
-  let poin = [
-    -0.52, 0.07, -0.52, 0.2, -0.65, 0.2, -0.65, 0.39, -0.52, 0.39, -0.52, 0.52,
-    -0.65, 0.52, -0.65, 0.72, -0.52, 0.72, -0.52, 0.85, -0.26, 0.85, -0.26,
-    0.72, -0.13, 0.72, -0.13, 0.52, -0.26, 0.52, -0.26, 0.4, -0.13, 0.4, -0.13,
-    0.2, -0.26, 0.2, -0.26, 0.07, -0.52, 0.07, 0.14, 0.2, 0.14, 0.72, 0.27,
-    0.72, 0.27, 0.85, 0.53, 0.85, 0.53, 0.72, 0.66, 0.72, 0.66, 0.2, 0.53, 0.2,
-    0.53, 0.07, 0.27, 0.07, 0.27, 0.2, 0.14, 0.2, -0.65, -0.2, -0.65, -0.1,
-    -0.15, -0.1, -0.15, -0.2, -0.45, -0.81, -0.45, -0.2, -0.35, -0.2, -0.35,
-    -0.81, 0.16, -0.2, 0.16, -0.71, 0.21, -0.71, 0.21, -0.75, 0.26, -0.76, 0.26,
-    -0.81, 0.56, -0.81, 0.56, -0.76, 0.61, -0.76, 0.61, -0.71, 0.66, -0.7, 0.67,
-    -0.2, 0.61, -0.2, 0.61, -0.15, 0.56, -0.15, 0.56, -0.1, 0.26, -0.1, 0.26,
-    -0.15, 0.21, -0.15, 0.31, -0.25, -0.52, 0.52, -0.52, 0.72, -0.26, 0.72,
-    -0.26, 0.52, -0.52, 0.52,
+  // decalre array untuk tiga pixel
+  let pixel1 = [-0.67, 0.55, -0.57, 0.55, -0.57, 0.65, -0.67, 0.65];
+  let pixel2 = [-0.46, 0.45, -0.36, 0.45, -0.36, 0.55, -0.46, 0.55];
+  let pixel3 = [0.21, -0.01, 0.31, -0.01, 0.31, 0.09, 0.21, 0.09];
+  console.log(pixel2.length);
 
-    -0.52, 0.2, -0.52, 0.39, -0.26, 0.4, -0.26, 0.2, -0.52, 0.2,
+  function shiftx(array, length, offset) {
+    let pixelofx = [];
+    for (let a = 0; a < array.length; a++) {
+      if (a % 2 == 0) {
+        pixelofx[a] = array[a] + offset;
+      } else pixelofx[a] = array[a];
+    }
+    return pixelofx;
+  }
+  function shifty(array, length, offset) {
+    let pixelofx = [];
+    for (let a = 0; a < array.length; a++) {
+      if (a % 2 == 1) {
+        pixelofx[a] = array[a] + offset;
+      } else pixelofx[a] = array[a];
+    }
+    return pixelofx;
+  }
 
-    0.27, 0.71, 0.27, 0.4, 0.33, 0.4, 0.33, 0.52, 0.46, 0.52, 0.46, 0.65, 0.53,
-    0.65, 0.53, 0.72, 0.27, 0.71,
+  // Double shift(dots diagonal)
+  function shiftxy(array, index, xsign, ysign) {
+    return shiftx(
+      shifty(array, array.length, (xsign * index) / 10),
+      array.length,
+      (ysign * index) / 10
+    );
+  }
+  function shiftxyhalf(array, index, xsign, ysign) {
+    return shiftx(
+      shifty(array, array.length, (xsign * index) / 2 / 10),
+      array.length,
+      (ysign * index) / 2 / 10
+    );
+  }
 
-    0.27, 0.26, 0.33, 0.27, 0.33, 0.39, 0.46, 0.4, 0.46, 0.52, 0.53, 0.52, 0.52,
-    0.2, 0.27, 0.2, 0.27, 0.26, 0.33, 0.27,
+  // Double shift(dots horizontal)
+  function shiftxx(array, index, xsign, ysign) {
+    return shiftx(
+      shiftx(array, array.length, (xsign * index) / 10),
+      array.length,
+      (ysign * index) / 10
+    );
+  }
+
+  // Double shift(dots vertical)
+  function shiftyy(array, index, xsign, ysign) {
+    return shifty(
+      shifty(array, array.length, (xsign * index) / 10),
+      array.length,
+      (ysign * index) / 10
+    );
+  }
+
+  function getlastpixel() {
+    return poin.slice(-8);
+  }
+
+  let poin = [];
+  poin = poin.concat(pixel1);
+
+  // for loop the vertex thingy
+  for (let index = 0; index < 5; index++) {
+    // console.table(poin);
+    poin = poin.concat(shiftx(pixel1, pixel1.length, index / 10));
+  }
+  for (let index = 0; index < 6; index++) {
+    // console.table(poin);
+    poin = poin.concat(shifty(pixel2, pixel2.length, -index / 10));
+  }
+
+  // draw the 0
+  for (let index = 0; index < 2; index++) {
+    // console.table(poin);
+    poin = poin.concat(shiftxyhalf(pixel3, index, -1, 1));
+  }
+  let lastpoint = getlastpixel();
+  for (let index = 0; index < 3; index++) {
+    poin = poin.concat(shiftx(lastpoint, lastpoint.length, index / 10));
+  }
+  lastpoint = getlastpixel();
+  for (let index = 0; index < 3; index++) {
+    poin = poin.concat(shiftxyhalf(lastpoint, index, 1, 1));
+  }
+  lastpoint = getlastpixel();
+  for (let index = 0; index < 5; index++) {
+    poin = poin.concat(shifty(lastpoint, lastpoint.length, index / 10));
+  }
+  lastpoint = getlastpixel();
+  for (let index = 0; index < 3; index++) {
+    poin = poin.concat(shiftxyhalf(lastpoint, index, 1, -1));
+  }
+  lastpoint = getlastpixel();
+  for (let index = 0; index < 3; index++) {
+    poin = poin.concat(shiftx(lastpoint, lastpoint.length, -index / 10));
+  }
+  lastpoint = getlastpixel();
+  for (let index = 0; index < 3; index++) {
+    poin = poin.concat(shiftxyhalf(lastpoint, index, -1, -1));
+  }
+  lastpoint = getlastpixel();
+  for (let index = 0; index < 5; index++) {
+    poin = poin.concat(shifty(lastpoint, lastpoint.length, -index / 10));
+  }
+  lastpoint = getlastpixel();
+  for (let index = 0; index < 5; index++) {
+    poin = poin.concat(shiftxy(lastpoint, index, 1, 1));
+  }
+  console.log("test " + poin.length + " " + poin.length / 8);
+  let number8 = [
+    -0.39, -0.3, -0.36, -0.3, -0.36, -0.27, -0.33, -0.27, -0.33, -0.24, -0.14,
+    -0.24, -0.14, -0.27, -0.11, -0.27, -0.11, -0.3, -0.08, -0.3, -0.08, -0.43,
+    -0.11, -0.43, -0.11, -0.47, -0.08, -0.47, -0.08, -0.6, -0.11, -0.6, -0.11,
+    -0.64, -0.14, -0.64, -0.14, -0.67, -0.33, -0.67, -0.33, -0.64, -0.36, -0.64,
+    -0.36, -0.6, -0.39, -0.6, -0.39, -0.47, -0.36, -0.47, -0.36, -0.43, -0.39,
+    -0.43, -0.39, -0.3, -0.36, -0.3,
   ];
-  console.log(poin.length);
+  let number8bolong1 = [];
+  let number8bolong2 = [];
+  poin = poin.concat(number8);
+  console.log("test2 " + poin.length + " " + poin.length / 8);
   let vertices = [];
   let buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -40,7 +142,7 @@ function main(params) {
     void main(){
        float x = aPosition.x;
        float y = aPosition.y;
-       gl_PointSize = 10.0;
+       gl_PointSize = 4.0;
        gl_Position = vec4( x, y, 0.0, 1.0);
        //also works like aPossition.xy
     }`;
@@ -88,15 +190,13 @@ function main(params) {
 
   gl.clearColor(0.14117647058, 0.10588235294, 0.10196078431, 1.0);
   gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.drawArrays(gl.LINE_STRIP, 0, 21);
-  gl.drawArrays(gl.LINE_STRIP, 21, 13);
-  gl.drawArrays(gl.TRIANGLE_FAN, 34, 4);
-  gl.drawArrays(gl.TRIANGLE_FAN, 38, 4);
-  gl.drawArrays(gl.TRIANGLE_FAN, 42, 20);
-  gl.drawArrays(gl.LINE_STRIP, 62, 5);
-  gl.drawArrays(gl.LINE_STRIP, 67, 5);
-  gl.drawArrays(gl.LINE_STRIP, 72, 9);
-  gl.drawArrays(gl.LINE_STRIP, 82, 9);
+  let n = 0;
+  for (let index = 0; index < 176; index = index + 4) {
+    // console.table(poin);
+    gl.drawArrays(gl.TRIANGLE_FAN, index, 4);
+  }
+  gl.drawArrays(gl.LINE_STRIP, 176, 29);
+
   // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
   // gl.POINTS
   // gl.LINE_LOOP
