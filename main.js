@@ -1,246 +1,315 @@
 function main(params) {
   let cnavas = document.getElementById("canvas");
   let gl = cnavas.getContext("webgl");
-
-  //   note:pakai backtick untuk multiple lines
-
-  // decalre array untuk tiga pixel
-  let pixel1 = [-0.67, 0.55, -0.57, 0.55, -0.57, 0.65, -0.67, 0.65];
-  let pixel2 = [-0.46, 0.45, -0.36, 0.45, -0.36, 0.55, -0.46, 0.55];
-  let pixel3 = [0.21, -0.01, 0.31, -0.01, 0.31, 0.09, 0.21, 0.09];
-  console.log(pixel2.length);
-
-  function shiftx(array, length, offset) {
-    let pixelofx = [];
-    for (let a = 0; a < array.length; a++) {
-      if (a % 2 == 0) {
-        pixelofx[a] = array[a] + offset;
-      } else pixelofx[a] = array[a];
-    }
-    return pixelofx;
-  }
-  function shifty(array, length, offset) {
-    let pixelofx = [];
-    for (let a = 0; a < array.length; a++) {
-      if (a % 2 == 1) {
-        pixelofx[a] = array[a] + offset;
-      } else pixelofx[a] = array[a];
-    }
-    return pixelofx;
-  }
-
-  // Double shift(dots diagonal)
-  function shiftxy(array, index, xsign, ysign) {
-    return shiftx(
-      shifty(array, array.length, (xsign * index) / 10),
-      array.length,
-      (ysign * index) / 10
-    );
-  }
-  function shiftxyhalf(array, index, xsign, ysign) {
-    return shiftx(
-      shifty(array, array.length, (xsign * index) / 2 / 10),
-      array.length,
-      (ysign * index) / 2 / 10
-    );
-  }
-
-  // Double shift(dots horizontal)
-  function shiftxx(array, index, xsign, ysign) {
-    return shiftx(
-      shiftx(array, array.length, (xsign * index) / 10),
-      array.length,
-      (ysign * index) / 10
-    );
-  }
-
-  // Double shift(dots vertical)
-  function shiftyy(array, index, xsign, ysign) {
-    return shifty(
-      shifty(array, array.length, (xsign * index) / 10),
-      array.length,
-      (ysign * index) / 10
-    );
-  }
-
-  function getlastpixel() {
-    return poin.slice(-8);
-  }
-
   let poin = [];
-  poin = poin.concat(pixel1);
-
+  let faces = [];
+  var vertices = [
+    // Face A
+    -1,
+    -1,
+    -1, // Index:  0
+    1,
+    -1,
+    -1, // Index:  1
+    1,
+    1,
+    -1, // Index:  2
+    -1,
+    1,
+    -1, // Index:  3
+    // Face B
+    -1,
+    -1,
+    1, // Index:  4
+    1,
+    -1,
+    1, // Index:  5
+    1,
+    1,
+    1, // Index:  6
+    -1,
+    1,
+    1, // Index:  7
+    // Face C
+    -1,
+    -1,
+    -1, // Index:  8
+    -1,
+    1,
+    -1, // Index:  9
+    -1,
+    1,
+    1, // Index: 10
+    -1,
+    -1,
+    1, // Index: 11
+    // Face D
+    1,
+    -1,
+    -1, // Index: 12
+    1,
+    1,
+    -1, // Index: 13
+    1,
+    1,
+    1, // Index: 14
+    1,
+    -1,
+    1, // Index: 15
+    // Face E
+    -1,
+    -1,
+    -1, // Index: 16
+    -1,
+    -1,
+    1, // Index: 17
+    1,
+    -1,
+    1, // Index: 18
+    1,
+    -1,
+    -1, // Index: 19
+    // Face F
+    -1,
+    1,
+    -1, // Index: 20
+    -1,
+    1,
+    1, // Index: 21
+    1,
+    1,
+    1, // Index: 22
+    1,
+    1,
+    -1, // Index: 23
+  ];
+  var indices = [
+    0,
+    1,
+    2,
+    0,
+    2,
+    3, // Face A
+    4,
+    5,
+    6,
+    4,
+    6,
+    7, // Face B
+    8,
+    9,
+    10,
+    8,
+    10,
+    11, // Face C
+    12,
+    13,
+    14,
+    12,
+    14,
+    15, // Face D
+    16,
+    17,
+    18,
+    16,
+    18,
+    19, // Face E
+    20,
+    21,
+    22,
+    20,
+    22,
+    23, // Face F
+  ];
+  function getlastpixel() {
+    return poin.slice(-60);
+  }
   // for loop the vertex thingy
-  for (let index = 0; index < 5; index++) {
+  // faces = faces.concat(indices);
+  // poin = poin.concat(vertices);
+  // faces = faces.concat(indices);
+  // jika index ujung +2, yang tengah kali 2
+  let scalevalue = 0.4;
+  // awal vertices di 0,0
+  vertices = scale(vertices, scalevalue);
+  vertices = shiftxy(vertices, scalevalue, 10, -10);
+  let vertices2 = shiftx(vertices, 4 * scalevalue);
+  let vertices3 = shiftxy(vertices, scalevalue, -2, 12);
+  let vertices4 = shifty(vertices, scalevalue, -2, 12);
+  for (let index = 0; index < 10; index = index + 2) {
     // console.table(poin);
-    poin = poin.concat(shiftx(pixel1, pixel1.length, index / 10));
-  }
-  for (let index = 0; index < 6; index++) {
-    // console.table(poin);
-    poin = poin.concat(shifty(pixel2, pixel2.length, -index / 10));
+    poin = poin.concat(shiftx(vertices, index * scalevalue));
+
+    faces = faces.concat(shiftx(indices, index));
   }
 
-  // draw the 0
-  for (let index = 0; index < 2; index++) {
+  for (let index = 0; index < 12; index = index + 2) {
     // console.table(poin);
-    poin = poin.concat(shiftxyhalf(pixel3, index, -1, 1));
+    poin = poin.concat(shifty(vertices2, -index * scalevalue));
+  }
+
+  for (let index = 0; index < 8; index = index + 2) {
+    // console.table(poin);
+    poin = poin.concat(shifty(vertices3, -index * scalevalue));
   }
   let lastpoint = getlastpixel();
-  for (let index = 0; index < 3; index++) {
-    poin = poin.concat(shiftx(lastpoint, lastpoint.length, index / 10));
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(poin);
+    poin = poin.concat(shiftxyhalf(lastpoint, index * scalevalue, -1, 1));
   }
   lastpoint = getlastpixel();
-  for (let index = 0; index < 3; index++) {
-    poin = poin.concat(shiftxyhalf(lastpoint, index, 1, 1));
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(poin);
+    poin = poin.concat(shiftx(lastpoint, index * scalevalue));
   }
   lastpoint = getlastpixel();
-  for (let index = 0; index < 5; index++) {
-    poin = poin.concat(shifty(lastpoint, lastpoint.length, index / 10));
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(poin);
+    poin = poin.concat(shiftxyhalf(lastpoint, index * scalevalue, 1, 1));
   }
   lastpoint = getlastpixel();
-  for (let index = 0; index < 3; index++) {
-    poin = poin.concat(shiftxyhalf(lastpoint, index, 1, -1));
+  for (let index = 0; index < 8; index = index + 2) {
+    // console.table(poin);
+    poin = poin.concat(shifty(lastpoint, index * scalevalue));
   }
   lastpoint = getlastpixel();
-  for (let index = 0; index < 3; index++) {
-    poin = poin.concat(shiftx(lastpoint, lastpoint.length, -index / 10));
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(poin);
+    poin = poin.concat(shiftxyhalf(lastpoint, index * scalevalue, 1, -1));
   }
   lastpoint = getlastpixel();
-  for (let index = 0; index < 3; index++) {
-    poin = poin.concat(shiftxyhalf(lastpoint, index, -1, -1));
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(poin);
+    poin = poin.concat(shiftx(lastpoint, -index * scalevalue));
   }
   lastpoint = getlastpixel();
-  for (let index = 0; index < 5; index++) {
-    poin = poin.concat(shifty(lastpoint, lastpoint.length, -index / 10));
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(poin);
+    poin = poin.concat(shiftxyhalf(lastpoint, index * scalevalue, -1, -1));
   }
-  lastpoint = getlastpixel();
-  for (let index = 0; index < 5; index++) {
-    poin = poin.concat(shiftxy(lastpoint, index, 1, 1));
-  }
-  console.log("test " + poin.length + " " + poin.length / 8);
-  let number8 = [
-    -0.39, -0.3, -0.36, -0.3, -0.36, -0.27, -0.33, -0.27, -0.33, -0.24, -0.14,
-    -0.24, -0.14, -0.27, -0.11, -0.27, -0.11, -0.3, -0.08, -0.3, -0.08, -0.43,
-    -0.11, -0.43, -0.11, -0.47, -0.08, -0.47, -0.08, -0.6, -0.11, -0.6, -0.11,
-    -0.64, -0.14, -0.64, -0.14, -0.67, -0.33, -0.67, -0.33, -0.64, -0.36, -0.64,
-    -0.36, -0.6, -0.39, -0.6, -0.39, -0.47, -0.36, -0.47, -0.36, -0.43, -0.39,
-    -0.43, -0.39, -0.3,
-  ];
-  let number8bolong1 = [
-    -0.31, -0.34, -0.28, -0.34, -0.28, -0.31, -0.18, -0.31, -0.18, -0.34, -0.15,
-    -0.34, -0.15, -0.38, -0.18, -0.38, -0.18, -0.41, -0.28, -0.41, -0.28, -0.38,
-    -0.31, -0.38, -0.28, -0.34,
-  ];
-  let number8bolong2 = [
-    -0.31, -0.52, -0.28, -0.52, -0.28, -0.49, -0.18, -0.49, -0.18, -0.52, -0.15,
-    -0.52, -0.15, -0.56, -0.18, -0.56, -0.18, -0.59, -0.28, -0.59, -0.28, -0.56,
-    -0.31, -0.56,
-  ];
-  let number0 = [
-    0.08, -0.3, 0.11, -0.3, 0.11, -0.27, 0.14, -0.27, 0.14, -0.24, 0.33, -0.24,
-    0.33, -0.27, 0.36, -0.27, 0.36, -0.3, 0.39, -0.3, 0.39, -0.43, 0.36, -0.43,
-    0.36, -0.47, 0.39, -0.47, 0.39, -0.6, 0.36, -0.6, 0.36, -0.64, 0.33, -0.64,
-    0.33, -0.67, 0.14, -0.67, 0.14, -0.64, 0.11, -0.64, 0.11, -0.6, 0.08, -0.6,
-    0.08, -0.47, 0.11, -0.47, 0.11, -0.43, 0.08, -0.43,
-  ];
-  let number0bolong1 = [
-    0.18, -0.31, 0.29, -0.31, 0.29, -0.34, 0.31, -0.34, 0.31, -0.36, 0.26,
-    -0.36, 0.26, -0.39, 0.23, -0.39, 0.23, -0.42, 0.2, -0.42, 0.2, -0.45, 0.17,
-    -0.45, 0.17, -0.48, 0.15, -0.48, 0.15, -0.34, 0.18, -0.34,
-  ];
-  let number0bolong2 = [
-    0.31, -0.42, 0.31, -0.56, 0.28, -0.56, 0.28, -0.59, 0.18, -0.59, 0.18,
-    -0.56, 0.15, -0.56, 0.15, -0.54, 0.2, -0.54, 0.2, -0.51, 0.23, -0.51, 0.23,
-    -0.48, 0.26, -0.48, 0.26, -0.45, 0.29, -0.45, 0.29, -0.42,
-  ];
-  poin = poin.concat(number8);
-  poin = poin.concat(number8bolong1);
-  poin = poin.concat(number8bolong2);
-  poin = poin.concat(number0);
-  poin = poin.concat(number0bolong1);
-  poin = poin.concat(number0bolong2);
-  console.log("test2 " + poin.length + " " + poin.length / 8);
-  let vertices = [];
-  let buffer = gl.createBuffer();
+  console.log(poin.length / 24);
+
+  console.log(poin);
+  console.log(faces);
+  var buffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
   gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(poin), gl.STATIC_DRAW);
 
-  //   vertex shader - posisi
-  //   shader code
-  let vertexShaderCode = `
-    attribute vec2 aPosition;
-    void main(){
-       float x = aPosition.x;
-       float y = aPosition.y;
-       gl_PointSize = 5.0;
-      //  gl_LineWidth = 4.0;
-       gl_Position = vec4( x, y, 0.0, 1.0);
-       //also works like aPossition.xy
-    }`;
-  //assignment yg diterrima yg terkahir saja, supaya shader
-  // bisa dipanggil beberpaa kali, drawarrays harus dipanggil beberpaa kali
+  var indexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+  gl.bufferData(
+    gl.ELEMENT_ARRAY_BUFFER,
+    new Uint16Array(faces),
+    gl.STATIC_DRAW
+  );
 
-  //   creaate shader object
-  let vertexShaderObject = gl.createShader(gl.VERTEX_SHADER);
+  // Vertex shader
+  var vertexShaderCode = `
+attribute vec3 aPosition; 
+uniform mat4 uModel;
+uniform mat4 uView;
+uniform mat4 uProjection;
+varying vec3 vColor;
+void main() {
+    gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);
+}
+`;
+  var vertexShaderObject = gl.createShader(gl.VERTEX_SHADER);
   gl.shaderSource(vertexShaderObject, vertexShaderCode);
-  //   compile the shader
-  gl.compileShader(vertexShaderObject);
+  gl.compileShader(vertexShaderObject); // sampai sini sudah jadi .o
 
-  // fragment shader - warna
-  //   shader code
-  let fragmentShaderCode = `
-    precision mediump float;
-    void main(){
-      float r = 1.0;
-      float g = 1.0;
-      float b = 1.0;
-      gl_FragColor = vec4(r , g, b, 1.0);
-    }`;
-  let fragmentShaderObject = gl.createShader(gl.FRAGMENT_SHADER);
+  // Fragment shader
+  var fragmentShaderCode = `
+  precision mediump float;
+  void main(){
+    float r = 1.0;
+    float g = 1.0;
+    float b = 1.0;
+    gl_FragColor = vec4(r , g, b, 1.0);
+  }`;
+  var fragmentShaderObject = gl.createShader(gl.FRAGMENT_SHADER);
   gl.shaderSource(fragmentShaderObject, fragmentShaderCode);
-  //   compile the shader
-  gl.compileShader(fragmentShaderObject);
+  gl.compileShader(fragmentShaderObject); // sampai sini sudah jadi .o
 
-  //   ".exe" file, but it's empty
-  let shaderProgram = gl.createProgram();
-
-  //   attach the shader to the file
+  var shaderProgram = gl.createProgram(); // wadah dari executable (.exe)
   gl.attachShader(shaderProgram, vertexShaderObject);
   gl.attachShader(shaderProgram, fragmentShaderObject);
-
-  //   link the Program
   gl.linkProgram(shaderProgram);
-
-  // use the program, which color to use?
   gl.useProgram(shaderProgram);
 
-  // Teach the GPU how to collect position value from ARRAY_BUFFERS for every vertex that is processed
-  let aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
-  gl.vertexAttribPointer(aPosition, 2, gl.FLOAT, false, 0, 0);
+  // Variabel lokal
+  var theta = 0.0;
+  var freeze = false;
+  var horizontalSpeed = 0.0;
+  var verticalSpeed = 0.0;
+  var horizontalDelta = 0.0;
+  var verticalDelta = 0.0;
+
+  // Variabel pointer ke GLSL
+  var uModel = gl.getUniformLocation(shaderProgram, "uModel");
+  // View
+  var cameraX = 0.0;
+  var cameraZ = 10.0;
+  var uView = gl.getUniformLocation(shaderProgram, "uView");
+  var view = glMatrix.mat4.create();
+  glMatrix.mat4.lookAt(
+    view,
+    [cameraX, 0.0, cameraZ], // the location of the eye or the camera
+    [cameraX, 0.0, -10], // the point where the camera look at
+    [0.0, 1.0, 0.0]
+  );
+  // Projection
+  var uProjection = gl.getUniformLocation(shaderProgram, "uProjection");
+  var perspective = glMatrix.mat4.create();
+  glMatrix.mat4.perspective(perspective, Math.PI / 3, 1.0, 0.5, 10.0);
+
+  // Kita mengajari GPU bagaimana caranya mengoleksi
+  //  nilai posisi dari ARRAY_BUFFER
+  //  untuk setiap verteks yang sedang diproses
+  var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
+  gl.vertexAttribPointer(
+    aPosition,
+    3,
+    gl.FLOAT,
+    false,
+    3 * Float32Array.BYTES_PER_ELEMENT,
+    0
+  );
   gl.enableVertexAttribArray(aPosition);
 
-  gl.clearColor(0.14117647058, 0.10588235294, 0.10196078431, 1.0);
-  gl.clear(gl.COLOR_BUFFER_BIT);
-  let n = 0;
-  for (let index = 0; index < 176; index = index + 4) {
-    // console.table(poin);
-    gl.drawArrays(gl.TRIANGLE_FAN, index, 4);
-  }
-  // draw everything else(the 80)
-  gl.drawArrays(gl.LINE_LOOP, 176, 28);
-  gl.drawArrays(gl.LINE_LOOP, 205, 12);
-  gl.drawArrays(gl.LINE_LOOP, 218, 12);
-  gl.drawArrays(gl.LINE_LOOP, 230, 28);
-  gl.drawArrays(gl.LINE_LOOP, 258, 15);
-  gl.drawArrays(gl.LINE_LOOP, 274, 16);
+  function render() {
+    gl.enable(gl.DEPTH_TEST);
+    gl.clearColor(1.0, 0.65, 0.0, 1.0); // Oranye
+    //            Merah     Hijau   Biru    Transparansi
+    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-  // https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Constants
-  // gl.POINTS
-  // gl.LINE_LOOP
-  // gl.LINE_STRIP
-  // gl.TRIANGLES
-  // gl.TRIANGLE_STRIP
-  // gl.TRIANGLE_FAN
+    theta += 0.01;
+
+    // horizontalDelta += horizontalSpeed;
+    // verticalDelta -= verticalSpeed;
+    var model = glMatrix.mat4.create(); // Membuat matriks identitas
+    glMatrix.mat4.translate(model, model, [
+      horizontalDelta,
+      verticalDelta,
+      0.0,
+    ]);
+    // glMatrix.mat4.rotateX(model, model, theta);
+    // glMatrix.mat4.rotateY(model, model, theta);
+    // glMatrix.mat4.rotateZ(model, model, theta);
+    gl.uniformMatrix4fv(uModel, false, model);
+    gl.uniformMatrix4fv(uView, false, view);
+    gl.uniformMatrix4fv(uProjection, false, perspective);
+    // kali 24
+    // 24*5 krn ada 5 blok, hitung blok yg
+    for (let index = 0; index < 800; index = index + 4) {
+      // console.table(poin);
+      gl.drawArrays(gl.TRIANGLE_FAN, index, 4);
+    }
+    // gl.drawElements(gl.LINES, faces.length, gl.UNSIGNED_SHORT, 0);
+
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
 }
 
 function getPointOnBezierCurve(points, offset, t) {
@@ -251,6 +320,58 @@ function getPointOnBezierCurve(points, offset, t) {
     v2.mult(points[offset + 2], 3 * invT * t * t),
     v2.mult(points[offset + 3], t * t * t)
   );
+}
+
+function shift(array, offset) {
+  let pixelofx = [];
+  for (let a = 0; a < array.length; a++) {
+    pixelofx[a] = array[a] + offset;
+  }
+  return pixelofx;
+}
+function scale(array, offset) {
+  let pixelofx = [];
+  for (let a = 0; a < array.length; a++) {
+    pixelofx[a] = array[a] * offset;
+  }
+  return pixelofx;
+}
+
+function shiftx(array, offset) {
+  let pixelofx = [];
+  for (let a = 0; a < array.length; a++) {
+    if (a % 3 == 0) {
+      pixelofx[a] = array[a] + offset;
+    } else pixelofx[a] = array[a];
+  }
+  return pixelofx;
+}
+function shifty(array, offset) {
+  let pixelofx = [];
+  for (let a = 0; a < array.length; a++) {
+    if (a % 3 == 1) {
+      pixelofx[a] = array[a] + offset;
+    } else pixelofx[a] = array[a];
+  }
+  return pixelofx;
+}
+
+// Double shift(dots diagonal)
+function shiftxy(array, index, xsign, ysign) {
+  return shiftx(shifty(array, xsign * index), ysign * index);
+}
+function shiftxyhalf(array, index, xsign, ysign) {
+  return shiftx(shifty(array, (xsign * index) / 2), (ysign * index) / 2);
+}
+
+// Double shift(dots horizontal)
+function shiftxx(array, index, xsign, ysign) {
+  return shiftx(shiftx(array, xsign * index), ysign * index);
+}
+
+// Double shift(dots vertical)
+function shiftyy(array, index, xsign, ysign) {
+  return shifty(shifty(array, xsign * index), ysign * index);
 }
 
 function getPointsOnBezierCurve(points, offset, numPoints) {
