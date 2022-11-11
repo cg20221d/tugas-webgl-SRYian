@@ -1,7 +1,9 @@
 function main(params) {
   let cnavas = document.getElementById("canvas");
   let gl = cnavas.getContext("webgl");
-  let poin = [];
+
+  let shapeT = [];
+  let shapeO = [];
   let faces = [];
   var vertices = [
     // Face A
@@ -83,6 +85,7 @@ function main(params) {
     1,
     -1, // Index: 23
   ];
+  console.log("vertices: " + vertices.length);
   var indices = [
     0,
     1,
@@ -121,12 +124,12 @@ function main(params) {
     22,
     23, // Face F
   ];
-  function getlastpixel() {
-    return poin.slice(-60);
+  function getlastpixel(array) {
+    return array.slice(-60);
   }
   // for loop the vertex thingy
   // faces = faces.concat(indices);
-  // poin = poin.concat(vertices);
+  // shapeT = shapeT.concat(vertices);
   // faces = faces.concat(indices);
   // jika index ujung +2, yang tengah kali 2
   let scalevalue = 0.4;
@@ -137,81 +140,86 @@ function main(params) {
   let vertices3 = shiftxy(vertices, scalevalue, -2, 12);
   let vertices4 = shifty(vertices, scalevalue, -2, 12);
   for (let index = 0; index < 10; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shiftx(vertices, index * scalevalue));
+    // console.table(shapeT);
+    shapeT = shapeT.concat(shiftx(vertices, index * scalevalue));
 
     faces = faces.concat(shiftx(indices, index));
   }
 
   for (let index = 0; index < 12; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shifty(vertices2, -index * scalevalue));
+    // console.table(shapeT);
+    shapeT = shapeT.concat(shifty(vertices2, -index * scalevalue));
   }
 
   for (let index = 0; index < 8; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shifty(vertices3, -index * scalevalue));
+    // console.table(shapeT);
+    shapeO = shapeO.concat(shifty(vertices3, -index * scalevalue));
   }
-  let lastpoint = getlastpixel();
+  let lastpointt = getlastpixel(shapeO);
   for (let index = 0; index < 6; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shiftxyhalf(lastpoint, index * scalevalue, -1, 1));
+    // console.table(shapeT);
+    shapeO = shapeO.concat(shiftxyhalf(lastpointt, index * scalevalue, -1, 1));
   }
-  lastpoint = getlastpixel();
+  lastpointt = getlastpixel(shapeO);
   for (let index = 0; index < 6; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shiftx(lastpoint, index * scalevalue));
+    // console.table(shapeT);
+    shapeO = shapeO.concat(shiftx(lastpointt, index * scalevalue));
   }
-  lastpoint = getlastpixel();
+  lastpointt = getlastpixel(shapeO);
   for (let index = 0; index < 6; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shiftxyhalf(lastpoint, index * scalevalue, 1, 1));
+    // console.table(shapeT);
+    shapeO = shapeO.concat(shiftxyhalf(lastpointt, index * scalevalue, 1, 1));
   }
-  lastpoint = getlastpixel();
+  lastpointt = getlastpixel(shapeO);
   for (let index = 0; index < 8; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shifty(lastpoint, index * scalevalue));
+    // console.table(shapeT);
+    shapeO = shapeO.concat(shifty(lastpointt, index * scalevalue));
   }
-  lastpoint = getlastpixel();
+  lastpointt = getlastpixel(shapeO);
   for (let index = 0; index < 6; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shiftxyhalf(lastpoint, index * scalevalue, 1, -1));
+    // console.table(shapeT);
+    shapeO = shapeO.concat(shiftxyhalf(lastpointt, index * scalevalue, 1, -1));
   }
-  lastpoint = getlastpixel();
+  lastpointt = getlastpixel(shapeO);
   for (let index = 0; index < 6; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shiftx(lastpoint, -index * scalevalue));
+    // console.table(shapeT);
+    shapeO = shapeO.concat(shiftx(lastpointt, -index * scalevalue));
   }
-  lastpoint = getlastpixel();
+  lastpointt = getlastpixel(shapeO);
   for (let index = 0; index < 6; index = index + 2) {
-    // console.table(poin);
-    poin = poin.concat(shiftxyhalf(lastpoint, index * scalevalue, -1, -1));
+    // console.table(shapeT);
+    shapeO = shapeO.concat(shiftxyhalf(lastpointt, index * scalevalue, -1, -1));
   }
-  console.log(poin.length / 24);
+  console.log(shapeT.length / 24);
 
-  console.log(poin);
-  console.log(faces);
-  var buffer = gl.createBuffer();
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(poin), gl.STATIC_DRAW);
+  console.log(shapeT.length);
+  console.log(shapeO.length);
+  // var Tbuffer = gl.createBuffer();
+  // gl.bindBuffer(gl.ARRAY_BUFFER, Tbuffer);
+  // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(shapeT), gl.STATIC_DRAW);
+  // var Obuffer = gl.createBuffer();
+  // gl.bindBuffer(gl.ARRAY_BUFFER, Obuffer);
+  // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(shapeO), gl.STATIC_DRAW);
 
-  var indexBuffer = gl.createBuffer();
-  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
-  gl.bufferData(
-    gl.ELEMENT_ARRAY_BUFFER,
-    new Uint16Array(faces),
-    gl.STATIC_DRAW
-  );
+  // var indexBuffer = gl.createBuffer();
+  // gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
+  // gl.bufferData(
+  //   gl.ELEMENT_ARRAY_BUFFER,
+  //   new Uint16Array(faces),
+  //   gl.STATIC_DRAW
+  // );
 
   // Vertex shader
   var vertexShaderCode = `
 attribute vec3 aPosition; 
+uniform mat4 uTShape; 
 uniform mat4 uModel;
+uniform mat4 uMatrix;
 uniform mat4 uView;
 uniform mat4 uProjection;
 varying vec3 vColor;
 void main() {
-    gl_Position = uProjection * uView * uModel * vec4(aPosition, 1.0);
+    gl_Position = uProjection * uView * uModel * uMatrix * vec4(aPosition, 1.0);
 }
 `;
   var vertexShaderObject = gl.createShader(gl.VERTEX_SHADER);
@@ -237,15 +245,84 @@ void main() {
   gl.linkProgram(shaderProgram);
   gl.useProgram(shaderProgram);
 
+  function draw() {
+    // renderer info
+
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    // Write the positions of vertices to a vertex shader
+    // drawPoint();
+    // drawLine();
+    // drawTriangle();
+
+    var pointsVertices = new Float32Array([-0.5, -0.5]);
+    var linesVertices = new Float32Array([-0.25, -0.25, -0.5, +0.5]);
+    var triangleVertices = new Float32Array([+0.5, -0.5, 0.0, 0.25, +0.5, 0.0]);
+    drawA(gl.POINTS, pointsVertices);
+    drawA(gl.LINES, linesVertices);
+    drawA(gl.TRIANGLES, triangleVertices);
+  }
+
+  function drawA(type, vertices, rot) {
+    var n = initBuffers(vertices);
+    if (n < 0) {
+      console.log("Failed to set the positions of the vertices");
+      return;
+    }
+
+    for (let index = 0; index < n; index = index + 4) {
+      // console.table(shapeT);
+      gl.drawArrays(type, index, 4);
+    }
+
+    let yoddle = gl.getUniformLocation(shaderProgram, "uMatrix");
+    var test = glMatrix.mat4.create(); // Membuat matriks identitas
+    if (rot) {
+      glMatrix.mat4.rotateX(test, test, theta);
+      glMatrix.mat4.rotateY(test, test, theta);
+    } else {
+      glMatrix.mat4.rotateZ(test, test, theta);
+    }
+    gl.uniformMatrix4fv(yoddle, false, test);
+  }
+
+  function initBuffers(vertices) {
+    var n = (vertices.length / 72) * 24;
+
+    var vertexBuffer = gl.createBuffer();
+    if (!vertexBuffer) {
+      console.log("Failed to create the buffer object");
+      return -1;
+    }
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+
+    var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
+    if (aPosition < 0) {
+      console.log("Failed to get the storage location of aPosition");
+      return -1;
+    }
+
+    gl.vertexAttribPointer(
+      aPosition,
+      3,
+      gl.FLOAT,
+      false,
+      3 * Float32Array.BYTES_PER_ELEMENT,
+      0
+    );
+    gl.enableVertexAttribArray(aPosition);
+    return n;
+  }
+
   // Variabel lokal
-  var theta = 0.0;
-  var freeze = false;
-  var horizontalSpeed = 0.0;
-  var verticalSpeed = 0.0;
+
   var horizontalDelta = 0.0;
   var verticalDelta = 0.0;
 
-  // Variabel pointer ke GLSL
+  // Variabel shapeTter ke GLSL
   var uModel = gl.getUniformLocation(shaderProgram, "uModel");
   // View
   var cameraX = 0.0;
@@ -255,7 +332,7 @@ void main() {
   glMatrix.mat4.lookAt(
     view,
     [cameraX, 0.0, cameraZ], // the location of the eye or the camera
-    [cameraX, 0.0, -10], // the point where the camera look at
+    [cameraX, 0.0, -10], // the shapeTt where the camera look at
     [0.0, 1.0, 0.0]
   );
   // Projection
@@ -266,17 +343,18 @@ void main() {
   // Kita mengajari GPU bagaimana caranya mengoleksi
   //  nilai posisi dari ARRAY_BUFFER
   //  untuk setiap verteks yang sedang diproses
-  var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
-  gl.vertexAttribPointer(
-    aPosition,
-    3,
-    gl.FLOAT,
-    false,
-    3 * Float32Array.BYTES_PER_ELEMENT,
-    0
-  );
-  gl.enableVertexAttribArray(aPosition);
-
+  // var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
+  // gl.vertexAttribPointer(
+  //   aPosition,
+  //   3,
+  //   gl.FLOAT,
+  //   false,
+  //   3 * Float32Array.BYTES_PER_ELEMENT,
+  //   0
+  // );
+  // gl.enableVertexAttribArray(aPosition);
+  var triangles = [+0.5, -0.5, 0.0, 0.25, +0.5, 0.0];
+  let theta = 0;
   function render() {
     gl.enable(gl.DEPTH_TEST);
     gl.clearColor(1.0, 0.65, 0.0, 1.0); // Oranye
@@ -297,29 +375,30 @@ void main() {
     // glMatrix.mat4.rotateY(model, model, theta);
     // glMatrix.mat4.rotateZ(model, model, theta);
     gl.uniformMatrix4fv(uModel, false, model);
+
     gl.uniformMatrix4fv(uView, false, view);
     gl.uniformMatrix4fv(uProjection, false, perspective);
+    // console.log(shapeT);
+
+    drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), true);
+    drawA(gl.TRIANGLE_FAN, new Float32Array(shapeO), false);
+    // var pointsVertices = new Float32Array([-0.5, -0.5]);
+    // var linesVertices = new Float32Array([-0.25, -0.25, -0.5, +0.5]);
+    var triangleVertices = new Float32Array([+0.5, -0.5, 0.0, 0.25, +0.5, 0.0]);
+    // drawA(gl.POINTS, pointsVertices);
+    // drawA(gl.LINES, linesVertices);
+    // drawA(gl.TRIANGLES, triangleVertices);
+
     // kali 24
     // 24*5 krn ada 5 blok, hitung blok yg
-    for (let index = 0; index < 800; index = index + 4) {
-      // console.table(poin);
-      gl.drawArrays(gl.TRIANGLE_FAN, index, 4);
-    }
+    // for (let index = 0; index < 800; index = index + 4) {
+    //   // console.table(shapeT);
+    //   gl.drawArrays(gl.TRIANGLE_FAN, index, 4);
+    // }
     // gl.drawElements(gl.LINES, faces.length, gl.UNSIGNED_SHORT, 0);
-
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);
-}
-
-function getPointOnBezierCurve(points, offset, t) {
-  const invT = 1 - t;
-  return v2.add(
-    v2.mult(points[offset + 0], invT * invT * invT),
-    v2.mult(points[offset + 1], 3 * t * invT * invT),
-    v2.mult(points[offset + 2], 3 * invT * t * t),
-    v2.mult(points[offset + 3], t * t * t)
-  );
 }
 
 function shift(array, offset) {
@@ -373,42 +452,3 @@ function shiftxx(array, index, xsign, ysign) {
 function shiftyy(array, index, xsign, ysign) {
   return shifty(shifty(array, xsign * index), ysign * index);
 }
-
-function getPointsOnBezierCurve(points, offset, numPoints) {
-  const cpoints = [];
-  for (let i = 0; i < numPoints; ++i) {
-    const t = i / (numPoints - 1);
-    cpoints.push(getPointOnBezierCurve(points, offset, t));
-  }
-  return cpoints;
-}
-
-const v2 = (function () {
-  // adds 1 or more v2s
-  function add(a, ...args) {
-    const n = a.slice();
-    [...args].forEach((p) => {
-      n[0] += p[0];
-      n[1] += p[1];
-    });
-    return n;
-  }
-
-  function mult(a, s) {
-    if (Array.isArray(s)) {
-      let t = s;
-      s = a;
-      a = t;
-    }
-    if (Array.isArray(s)) {
-      return [a[0] * s[0], a[1] * s[1]];
-    } else {
-      return [a[0] * s, a[1] * s];
-    }
-  }
-
-  return {
-    add: add,
-    mult: mult,
-  };
-})();
