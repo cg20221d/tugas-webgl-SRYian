@@ -4,6 +4,8 @@ function main(params) {
 
   let shapeT = [];
   let shapeO = [];
+  let shape8 = [];
+  let shape0 = [];
   let faces = [];
   var vertices = [
     // Face A
@@ -135,10 +137,11 @@ function main(params) {
   let scalevalue = 0.4;
   // awal vertices di 0,0
   vertices = scale(vertices, scalevalue);
-  vertices = shiftxy(vertices, scalevalue, 10, -10);
+  vertices = shiftxy(vertices, scalevalue, 12, -10);
   let vertices2 = shiftx(vertices, 4 * scalevalue);
   let vertices3 = shiftxy(vertices, scalevalue, -2, 12);
-  let vertices4 = shifty(vertices, scalevalue, -2, 12);
+  let vertices4 = shiftxy(vertices, scalevalue, -20, 2);
+  let vertices5 = shiftxy(vertices, scalevalue, -22, 12);
   for (let index = 0; index < 10; index = index + 2) {
     // console.table(shapeT);
     shapeT = shapeT.concat(shiftx(vertices, index * scalevalue));
@@ -190,11 +193,138 @@ function main(params) {
     // console.table(shapeT);
     shapeO = shapeO.concat(shiftxyhalf(lastpointt, index * scalevalue, -1, -1));
   }
-  console.log(shapeT.length / 24);
 
-  console.log(shapeT.length);
-  console.log(shapeO.length);
-  // var Tbuffer = gl.createBuffer();
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftxyhalf(vertices4, index * scalevalue, -1, -1));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 4; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shifty(lastpointt, -index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftxyhalf(lastpointt, index * scalevalue, -1, 1));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftx(lastpointt, index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftxyhalf(lastpointt, index * scalevalue, 1, 1));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 4; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shifty(lastpointt, index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftxyhalf(lastpointt, index * scalevalue, 1, -1));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftx(lastpointt, -index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftxyhalf(lastpointt, index * scalevalue, 1, -1));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 4; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shifty(lastpointt, index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftxyhalf(lastpointt, index * scalevalue, 1, 1));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftx(lastpointt, index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftxyhalf(lastpointt, index * scalevalue, -1, 1));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 4; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shifty(lastpointt, -index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape8);
+  for (let index = 0; index < 4; index = index + 2) {
+    // console.table(shapeT);
+    shape8 = shape8.concat(shiftxyhalf(lastpointt, index * scalevalue, -1, -1));
+  }
+
+  for (let index = 0; index < 4; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shifty(vertices5, -index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape0);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shiftxyhalf(lastpointt, index * scalevalue, -1, 1));
+  }
+  lastpointt = getlastpixel(shape0);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shiftx(lastpointt, index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape0);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shiftxyhalf(lastpointt, index * scalevalue, 1, 1));
+  }
+  lastpointt = getlastpixel(shape0);
+  for (let index = 0; index < 10; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shifty(lastpointt, index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape0);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shiftxyhalf(lastpointt, index * scalevalue, 1, -1));
+  }
+  lastpointt = getlastpixel(shape0);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shiftx(lastpointt, -index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape0);
+  for (let index = 0; index < 6; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shiftxyhalf(lastpointt, index * scalevalue, -1, -1));
+  }
+  lastpointt = getlastpixel(shape0);
+  for (let index = 0; index < 10; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shifty(lastpointt, -index * scalevalue));
+  }
+  lastpointt = getlastpixel(shape0);
+  for (let index = 0; index < 10; index = index + 2) {
+    // console.table(shapeT);
+    shape0 = shape0.concat(shiftxy(lastpointt, index * scalevalue, 1, 1));
+  }
+  {
+    console.log(shapeT.length / 24);
+
+    console.log(shapeT.length);
+    console.log(shapeO.length);
+    // var Tbuffer = gl.createBuffer();
+  }
   // gl.bindBuffer(gl.ARRAY_BUFFER, Tbuffer);
   // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(shapeT), gl.STATIC_DRAW);
   // var Obuffer = gl.createBuffer();
@@ -245,100 +375,29 @@ void main() {
   gl.linkProgram(shaderProgram);
   gl.useProgram(shaderProgram);
 
-  function draw() {
-    // renderer info
-
-    gl.clearColor(0, 0, 0, 1);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-
-    // Write the positions of vertices to a vertex shader
-    // drawPoint();
-    // drawLine();
-    // drawTriangle();
-
-    var pointsVertices = new Float32Array([-0.5, -0.5]);
-    var linesVertices = new Float32Array([-0.25, -0.25, -0.5, +0.5]);
-    var triangleVertices = new Float32Array([+0.5, -0.5, 0.0, 0.25, +0.5, 0.0]);
-    drawA(gl.POINTS, pointsVertices);
-    drawA(gl.LINES, linesVertices);
-    drawA(gl.TRIANGLES, triangleVertices);
-  }
-
-  function drawA(type, vertices, rot) {
-    var n = initBuffers(vertices);
-    if (n < 0) {
-      console.log("Failed to set the positions of the vertices");
-      return;
-    }
-
-    for (let index = 0; index < n; index = index + 4) {
-      // console.table(shapeT);
-      gl.drawArrays(type, index, 4);
-    }
-
-    let yoddle = gl.getUniformLocation(shaderProgram, "uMatrix");
-    var test = glMatrix.mat4.create(); // Membuat matriks identitas
-    if (rot) {
-      glMatrix.mat4.rotateX(test, test, theta);
-      glMatrix.mat4.rotateY(test, test, theta);
-    } else {
-      glMatrix.mat4.rotateZ(test, test, theta);
-    }
-    gl.uniformMatrix4fv(yoddle, false, test);
-  }
-
-  function initBuffers(vertices) {
-    var n = (vertices.length / 72) * 24;
-
-    var vertexBuffer = gl.createBuffer();
-    if (!vertexBuffer) {
-      console.log("Failed to create the buffer object");
-      return -1;
-    }
-
-    gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-
-    var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
-    if (aPosition < 0) {
-      console.log("Failed to get the storage location of aPosition");
-      return -1;
-    }
-
-    gl.vertexAttribPointer(
-      aPosition,
-      3,
-      gl.FLOAT,
-      false,
-      3 * Float32Array.BYTES_PER_ELEMENT,
-      0
-    );
-    gl.enableVertexAttribArray(aPosition);
-    return n;
-  }
-
-  // Variabel lokal
-
-  var horizontalDelta = 0.0;
-  var verticalDelta = 0.0;
-
   // Variabel shapeTter ke GLSL
   var uModel = gl.getUniformLocation(shaderProgram, "uModel");
+
   // View
+  // z kamera 7.5 unit mundur dari origin
+  // tapi pertahankan agar kamera tetap melihat ke arah origin
   var cameraX = 0.0;
-  var cameraZ = 10.0;
+  var cameraZ = 7.5;
   var uView = gl.getUniformLocation(shaderProgram, "uView");
   var view = glMatrix.mat4.create();
   glMatrix.mat4.lookAt(
     view,
-    [cameraX, 0.0, cameraZ], // the location of the eye or the camera
-    [cameraX, 0.0, -10], // the shapeTt where the camera look at
-    [0.0, 1.0, 0.0]
+    [cameraX, 0.0, cameraZ], // Position of the viewer
+    [0.0, 0.0, 0], // Point the viewer is looking at
+    [0.0, 1.0, 0.0] //  vec3 pointing up
   );
   // Projection
   var uProjection = gl.getUniformLocation(shaderProgram, "uProjection");
   var perspective = glMatrix.mat4.create();
-  glMatrix.mat4.perspective(perspective, Math.PI / 3, 1.0, 0.5, 10.0);
+  // fov 75 derajat
+  // near clip 0.5, far clip 50.0
+  // perspective(out, fovy, aspect, near, far)
+  glMatrix.mat4.perspective(perspective, degToRad(75), 1.0, 0.5, 50.0);
 
   // Kita mengajari GPU bagaimana caranya mengoleksi
   //  nilai posisi dari ARRAY_BUFFER
@@ -353,8 +412,12 @@ void main() {
   //   0
   // );
   // gl.enableVertexAttribArray(aPosition);
+  const shape = new Shape(gl, shaderProgram);
+  const shape2 = new Shape(gl, shaderProgram);
   var triangles = [+0.5, -0.5, 0.0, 0.25, +0.5, 0.0];
   let theta = 0;
+  let horizontalDelta = 0,
+    verticalDelta = 0;
   function render() {
     gl.enable(gl.DEPTH_TEST);
     gl.clearColor(1.0, 0.65, 0.0, 1.0); // Oranye
@@ -380,8 +443,21 @@ void main() {
     gl.uniformMatrix4fv(uProjection, false, perspective);
     // console.log(shapeT);
 
-    drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), true);
-    drawA(gl.TRIANGLE_FAN, new Float32Array(shapeO), false);
+    // drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), true);
+    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), "", theta);
+    shape2.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeO), "", theta);
+    shape2.drawA(gl.LINES, new Float32Array(shape8), "", theta);
+    shape2.drawA(gl.LINES, new Float32Array(shape0), "", theta);
+    // shape.drawA(gl.LINES, new Float32Array(shape8), "rotx", theta);
+    // shape.drawA(
+    //   gl.TRIANGLE_FAN,
+    //   new Float32Array(shapeT),
+    //   "translate",
+    //   theta,
+    //   0,
+    //   -theta
+    // );
+    // drawA(gl.TRIANGLE_FAN, new Float32Array(shapeO), false);
     // var pointsVertices = new Float32Array([-0.5, -0.5]);
     // var linesVertices = new Float32Array([-0.25, -0.25, -0.5, +0.5]);
     var triangleVertices = new Float32Array([+0.5, -0.5, 0.0, 0.25, +0.5, 0.0]);
@@ -401,6 +477,10 @@ void main() {
   requestAnimationFrame(render);
 }
 
+function degToRad(d) {
+  return (d * Math.PI) / 180;
+}
+
 function shift(array, offset) {
   let pixelofx = [];
   for (let a = 0; a < array.length; a++) {
@@ -408,6 +488,7 @@ function shift(array, offset) {
   }
   return pixelofx;
 }
+
 function scale(array, offset) {
   let pixelofx = [];
   for (let a = 0; a < array.length; a++) {
@@ -425,6 +506,7 @@ function shiftx(array, offset) {
   }
   return pixelofx;
 }
+
 function shifty(array, offset) {
   let pixelofx = [];
   for (let a = 0; a < array.length; a++) {
