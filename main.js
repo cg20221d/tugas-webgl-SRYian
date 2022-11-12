@@ -416,8 +416,12 @@ void main() {
   const shape2 = new Shape(gl, shaderProgram);
   var triangles = [+0.5, -0.5, 0.0, 0.25, +0.5, 0.0];
   let theta = 0;
-  let horizontalDelta = 0,
-    verticalDelta = 0;
+  let delta = [0, 0];
+  let ppong = 0;
+  const duration = 2000;
+
+  let start = Date.now();
+
   function render() {
     gl.enable(gl.DEPTH_TEST);
     gl.clearColor(1.0, 0.65, 0.0, 1.0); // Oranye
@@ -425,29 +429,60 @@ void main() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     theta += 0.01;
-
+    ppong = pingpong(1, 3);
     // horizontalDelta += horizontalSpeed;
     // verticalDelta -= verticalSpeed;
     var model = glMatrix.mat4.create(); // Membuat matriks identitas
-    glMatrix.mat4.translate(model, model, [
-      horizontalDelta,
-      verticalDelta,
-      0.0,
-    ]);
+    // glMatrix.mat4.translate(model, model, [
+    //   horizontalDelta,
+    //   verticalDelta,
+    //   0.0,
+    // ]);
     // glMatrix.mat4.rotateX(model, model, theta);
     // glMatrix.mat4.rotateY(model, model, theta);
     // glMatrix.mat4.rotateZ(model, model, theta);
     gl.uniformMatrix4fv(uModel, false, model);
-
     gl.uniformMatrix4fv(uView, false, view);
     gl.uniformMatrix4fv(uProjection, false, perspective);
     // console.log(shapeT);
-
+    if (wkey) {
+      delta[1] += 0.01;
+    }
+    if (skey) {
+      delta[1] -= 0.01;
+    }
+    if (dkey) {
+      delta[0] += 0.01;
+    }
+    if (akey) {
+      delta[0] -= 0.01;
+    }
+    let now = Date.now();
+    let from = 1;
+    let to = 2;
+    let elapsed = now - start;
+    let val;
+    if (elapsed >= duration) {
+      start = now;
+      let x = from;
+      from = to;
+      to = x;
+    }
+    // Skalasikan objek digit kedua, memantul antara ukuran setengah dan dua kali lipat dengan kecepatan skalasi bebas
+    val = easeInOutElastic(elapsed, from, to - from, duration);
+    console.log(to + " " + from);
+    // console.log(val);
+    // console.log(to + " " + from);
+    // console.log(elapsed);
+    // console.log(val + " " + elapsed);
+    // Rotasikan objek alfabet pertama terhadap sumbu Y dengan kecepatan sudut bebas (kalian tentukan sendiri) ketika tombol kiri atau kanan pada keyboard ditekan.
+    // Rotasikan objek alfabet kedua terhadap sumbu X dengan kecepatan sudut bebas (kalian tentukan sendiri) ketika tombol atas atau bawah pada keyboard ditekan.
     // drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), true);
-    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), "", theta);
+    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), "roty", delta[1]);
     shape2.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeO), "", theta);
-    shape2.drawA(gl.LINES, new Float32Array(shape8), "", theta);
-    shape2.drawA(gl.LINES, new Float32Array(shape0), "", theta);
+    shape2.drawA(gl.LINES, new Float32Array(shape8), "scale", theta, 0, 0, val);
+
+    shape2.drawA(gl.LINES, new Float32Array(shape0), "rotx", delta[0]);
     // shape.drawA(gl.LINES, new Float32Array(shape8), "rotx", theta);
     // shape.drawA(
     //   gl.TRIANGLE_FAN,
@@ -476,6 +511,110 @@ void main() {
   }
   requestAnimationFrame(render);
 }
+
+function fract(a) {
+  return a - Math.floor(a);
+}
+function pingpong(a, b) {
+  if (b == 0.0) {
+    return 0.0;
+  } else {
+    return Math.abs(fract((a - b) / (b * 2.0)) * b * 2.0 - b);
+  }
+}
+function easeInQuad(t, b, c, d) {
+  return c * (t /= d) * t + b;
+}
+
+function easeInOutElastic(t, b, c, d) {
+  // jshint eqeqeq: false, -W041: true
+  var s = 1.70158;
+  var p = 0;
+  var a = c;
+  if (t == 0) return b;
+  if ((t /= d / 2) == 2) return b + c;
+  if (!p) p = d * (0.3 * 1.5);
+  if (a < Math.abs(c)) {
+    a = c;
+    s = p / 4;
+  } else s = (p / (2 * Math.PI)) * Math.asin(c / a);
+  if (t < 1)
+    return (
+      -0.5 *
+        (a *
+          Math.pow(2, 10 * (t -= 1)) *
+          Math.sin(((t * d - s) * (2 * Math.PI)) / p)) +
+      b
+    );
+  return (
+    a *
+      Math.pow(2, -10 * (t -= 1)) *
+      Math.sin(((t * d - s) * (2 * Math.PI)) / p) *
+      0.5 +
+    c +
+    b
+  );
+}
+
+let wkey = false;
+let skey = false;
+let akey = false;
+let dkey = false;
+// w
+function onKeyWUp(event) {
+  if (event.keyCode == 87) {
+    wkey = !wkey;
+  }
+}
+// w
+function onKeyWDown(event) {
+  if (event.keyCode == 87) {
+    wkey = !wkey;
+  }
+}
+// s
+function onKeySUp(event) {
+  if (event.keyCode == 83) {
+    skey = !skey;
+  }
+}
+function onKeySDown(event) {
+  if (event.keyCode == 83) {
+    skey = !skey;
+  }
+}
+// a
+function onKeyAUp(event) {
+  if (event.keyCode == 65) {
+    akey = !akey;
+  }
+}
+// a
+function onKeyADown(event) {
+  if (event.keyCode == 65) {
+    akey = !akey;
+  }
+}
+// d
+function onKeyDUp(event) {
+  if (event.keyCode == 68) {
+    dkey = !dkey;
+  }
+}
+function onKeyDDown(event) {
+  if (event.keyCode == 68) {
+    dkey = !dkey;
+  }
+}
+
+document.addEventListener("keydown", onKeyWDown);
+document.addEventListener("keyup", onKeyWUp);
+document.addEventListener("keydown", onKeySDown);
+document.addEventListener("keyup", onKeySUp);
+document.addEventListener("keydown", onKeyADown);
+document.addEventListener("keyup", onKeyAUp);
+document.addEventListener("keydown", onKeyDDown);
+document.addEventListener("keyup", onKeyDUp);
 
 function degToRad(d) {
   return (d * Math.PI) / 180;

@@ -6,7 +6,15 @@ class Shape {
   }
   //  horizontalDelta,
   // verticalDelta,
-  drawA(type, vertices, rot, theta, horizontalDelta, verticalDelta) {
+  drawA(
+    type,
+    vertices,
+    rot,
+    theta,
+    horizontalDelta,
+    verticalDelta,
+    scaleValue
+  ) {
     var n = this.initBuffers(vertices);
     if (n < 0) {
       console.log("Failed to set the positions of the vertices");
@@ -35,6 +43,9 @@ class Shape {
           verticalDelta,
           0.0,
         ]);
+        break;
+      case "scale":
+        glMatrix.mat4.scale(test, test, [scaleValue, scaleValue, scaleValue]);
         break;
       default:
         break;
