@@ -419,9 +419,13 @@ void main() {
   let delta = [0, 0];
   let ppong = 0;
   const duration = 2000;
-
+  const duration08 = 1000;
+  let speed = 0.008;
   let start = Date.now();
-
+  let from = 0.5;
+  let to = 2;
+  let totranslate = 7;
+  let fromtranslate = -1;
   function render() {
     gl.enable(gl.DEPTH_TEST);
     gl.clearColor(1.0, 0.65, 0.0, 1.0); // Oranye
@@ -458,19 +462,35 @@ void main() {
       delta[0] -= 0.01;
     }
     let now = Date.now();
-    let from = 1;
-    let to = 2;
+
     let elapsed = now - start;
     let val;
+    let val2;
+    // iftt his hits 200
     if (elapsed >= duration) {
       start = now;
       let x = from;
       from = to;
       to = x;
+      // dengan rumus s = v x t, dapat dicari durasi yang pas untuk kecepatan 0.008
+      // dari situlah varaiable 0.008 mucnul
+      if (elapsed > duration08) {
+        start = now;
+        let x = fromtranslate;
+        fromtranslate = totranslate;
+        totranslate = x;
+      }
     }
-    // Skalasikan objek digit kedua, memantul antara ukuran setengah dan dua kali lipat dengan kecepatan skalasi bebas
     val = easeInOutElastic(elapsed, from, to - from, duration);
-    console.log(to + " " + from);
+    val2 = easeInOutElastic(
+      elapsed,
+      fromtranslate,
+      totranslate - fromtranslate,
+      duration08
+    );
+
+    console.log(elapsed + " " + to + " " + from + " " + duration);
+    // Skalasikan objek digit kedua, memantul antara ukuran setengah dan dua kali lipat dengan kecepatan skalasi bebas
     // console.log(val);
     // console.log(to + " " + from);
     // console.log(elapsed);
@@ -478,11 +498,19 @@ void main() {
     // Rotasikan objek alfabet pertama terhadap sumbu Y dengan kecepatan sudut bebas (kalian tentukan sendiri) ketika tombol kiri atau kanan pada keyboard ditekan.
     // Rotasikan objek alfabet kedua terhadap sumbu X dengan kecepatan sudut bebas (kalian tentukan sendiri) ketika tombol atas atau bawah pada keyboard ditekan.
     // drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), true);
-    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), "roty", delta[1]);
-    shape2.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeO), "", theta);
+
+    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), "rotx", delta[0]);
+    shape2.drawA(
+      gl.TRIANGLE_FAN,
+      new Float32Array(shapeO),
+      "translate",
+      speed,
+      val2,
+      0
+    );
     shape2.drawA(gl.LINES, new Float32Array(shape8), "scale", theta, 0, 0, val);
 
-    shape2.drawA(gl.LINES, new Float32Array(shape0), "rotx", delta[0]);
+    shape2.drawA(gl.LINES, new Float32Array(shape0), "roty", delta[1]);
     // shape.drawA(gl.LINES, new Float32Array(shape8), "rotx", theta);
     // shape.drawA(
     //   gl.TRIANGLE_FAN,
@@ -562,19 +590,19 @@ let akey = false;
 let dkey = false;
 // w
 function onKeyWUp(event) {
-  if (event.keyCode == 87) {
+  if (event.keyCode == 38) {
     wkey = !wkey;
   }
 }
 // w
 function onKeyWDown(event) {
-  if (event.keyCode == 87) {
+  if (event.keyCode == 40) {
     wkey = !wkey;
   }
 }
 // s
 function onKeySUp(event) {
-  if (event.keyCode == 83) {
+  if (event.keyCode == 40) {
     skey = !skey;
   }
 }
@@ -585,24 +613,24 @@ function onKeySDown(event) {
 }
 // a
 function onKeyAUp(event) {
-  if (event.keyCode == 65) {
+  if (event.keyCode == 37) {
     akey = !akey;
   }
 }
 // a
 function onKeyADown(event) {
-  if (event.keyCode == 65) {
+  if (event.keyCode == 37) {
     akey = !akey;
   }
 }
 // d
 function onKeyDUp(event) {
-  if (event.keyCode == 68) {
+  if (event.keyCode == 39) {
     dkey = !dkey;
   }
 }
 function onKeyDDown(event) {
-  if (event.keyCode == 68) {
+  if (event.keyCode == 39) {
     dkey = !dkey;
   }
 }
