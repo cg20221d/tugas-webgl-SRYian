@@ -6,6 +6,7 @@ function main(params) {
   let shapeO = [];
   let shape8 = [];
   let shape0 = [];
+  let box = [];
   let faces = [];
   var vertices = [
     // Face A
@@ -318,6 +319,7 @@ function main(params) {
     // console.table(shapeT);
     shape0 = shape0.concat(shiftxy(lastpointt, index * scalevalue, 1, 1));
   }
+  box = box.concat(shiftxy(vertices, scalevalue, -11, 10));
   {
     console.log(shapeT.length / 24);
 
@@ -416,7 +418,7 @@ void main() {
   const shape2 = new Shape(gl, shaderProgram);
   var triangles = [+0.5, -0.5, 0.0, 0.25, +0.5, 0.0];
   let theta = 0;
-  let delta = [0, 0];
+  let delta = [0, 0, 0];
   let ppong = 0;
   const duration = 2000;
   const duration08 = 1000;
@@ -434,17 +436,9 @@ void main() {
 
     theta += 0.01;
     ppong = pingpong(1, 3);
-    // horizontalDelta += horizontalSpeed;
-    // verticalDelta -= verticalSpeed;
+
     var model = glMatrix.mat4.create(); // Membuat matriks identitas
-    // glMatrix.mat4.translate(model, model, [
-    //   horizontalDelta,
-    //   verticalDelta,
-    //   0.0,
-    // ]);
-    // glMatrix.mat4.rotateX(model, model, theta);
-    // glMatrix.mat4.rotateY(model, model, theta);
-    // glMatrix.mat4.rotateZ(model, model, theta);
+
     gl.uniformMatrix4fv(uModel, false, model);
     gl.uniformMatrix4fv(uView, false, view);
     gl.uniformMatrix4fv(uProjection, false, perspective);
@@ -491,50 +485,32 @@ void main() {
 
     console.log(elapsed + " " + to + " " + from + " " + duration);
     // Skalasikan objek digit kedua, memantul antara ukuran setengah dan dua kali lipat dengan kecepatan skalasi bebas
-    // console.log(val);
-    // console.log(to + " " + from);
-    // console.log(elapsed);
-    // console.log(val + " " + elapsed);
     // Rotasikan objek alfabet pertama terhadap sumbu Y dengan kecepatan sudut bebas (kalian tentukan sendiri) ketika tombol kiri atau kanan pada keyboard ditekan.
     // Rotasikan objek alfabet kedua terhadap sumbu X dengan kecepatan sudut bebas (kalian tentukan sendiri) ketika tombol atas atau bawah pada keyboard ditekan.
-    // drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), true);
 
-    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), "rotx", delta[0]);
-    shape2.drawA(
-      gl.TRIANGLE_FAN,
-      new Float32Array(shapeO),
-      "translate",
-      speed,
-      val2,
-      0
-    );
-    shape2.drawA(gl.LINES, new Float32Array(shape8), "scale", theta, 0, 0, val);
-
-    shape2.drawA(gl.LINES, new Float32Array(shape0), "roty", delta[1]);
-    // shape.drawA(gl.LINES, new Float32Array(shape8), "rotx", theta);
-    // shape.drawA(
+    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), "rotxs", delta[0]);
+    // shape2.drawA(
     //   gl.TRIANGLE_FAN,
-    //   new Float32Array(shapeT),
+    //   new Float32Array(shapeO),
     //   "translate",
-    //   theta,
-    //   0,
-    //   -theta
+    //   speed,
+    //   val2,
+    //   0
     // );
-    // drawA(gl.TRIANGLE_FAN, new Float32Array(shapeO), false);
-    // var pointsVertices = new Float32Array([-0.5, -0.5]);
-    // var linesVertices = new Float32Array([-0.25, -0.25, -0.5, +0.5]);
-    var triangleVertices = new Float32Array([+0.5, -0.5, 0.0, 0.25, +0.5, 0.0]);
-    // drawA(gl.POINTS, pointsVertices);
-    // drawA(gl.LINES, linesVertices);
-    // drawA(gl.TRIANGLES, triangleVertices);
+    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(box), "rotx", delta[0]);
+    shape2.drawA(
+      gl.LINES,
+      new Float32Array(shape8),
+      "scales",
+      theta,
+      0,
+      0,
+      0,
+      val
+    );
 
-    // kali 24
-    // 24*5 krn ada 5 blok, hitung blok yg
-    // for (let index = 0; index < 800; index = index + 4) {
-    //   // console.table(shapeT);
-    //   gl.drawArrays(gl.TRIANGLE_FAN, index, 4);
-    // }
-    // gl.drawElements(gl.LINES, faces.length, gl.UNSIGNED_SHORT, 0);
+    // shape2.drawA(gl.LINES, new Float32Array(shape0), "roty", delta[1]);
+
     requestAnimationFrame(render);
   }
   requestAnimationFrame(render);

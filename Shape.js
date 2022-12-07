@@ -13,6 +13,7 @@ class Shape {
     theta,
     horizontalDelta,
     verticalDelta,
+    zDelta,
     scaleValue
   ) {
     var n = this.initBuffers(vertices);
@@ -41,7 +42,7 @@ class Shape {
         glMatrix.mat4.translate(test, test, [
           horizontalDelta,
           verticalDelta,
-          0.0,
+          zDelta,
         ]);
         break;
       case "scale":
