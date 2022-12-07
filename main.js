@@ -8,86 +8,310 @@ function main(params) {
   let shape0 = [];
   let box = [];
   let faces = [];
-  var vertices = [
-    // Face A
+  let vertices = [
+    // Face A       // Red      // Surface orientation
     -1,
     -1,
+    -1,
+    1,
+    0,
+    0,
+    0,
+    0,
     -1, // Index:  0
     1,
     -1,
+    -1,
+    1,
+    0,
+    0,
+    0,
+    0,
     -1, // Index:  1
     1,
     1,
+    -1,
+    1,
+    0,
+    0,
+    0,
+    0,
     -1, // Index:  2
     -1,
     1,
+    -1,
+    1,
+    0,
+    0,
+    0,
+    0,
     -1, // Index:  3
-    // Face B
+    // Face B       // Yellow
     -1,
     -1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
     1, // Index:  4
     1,
     -1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
     1, // Index:  5
     1,
     1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
     1, // Index:  6
     -1,
     1,
+    1,
+    1,
+    1,
+    0,
+    0,
+    0,
     1, // Index:  7
-    // Face C
+    // Face C       // Green
     -1,
     -1,
-    -1, // Index:  8
+    -1,
+    0,
+    1,
+    0,
+    -1,
+    0,
+    0, // Index:  8
     -1,
     1,
-    -1, // Index:  9
+    -1,
+    0,
+    1,
+    0,
+    -1,
+    0,
+    0, // Index:  9
     -1,
     1,
-    1, // Index: 10
+    1,
+    0,
+    1,
+    0,
+    -1,
+    0,
+    0, // Index: 10
     -1,
     -1,
-    1, // Index: 11
-    // Face D
+    1,
+    0,
+    1,
+    0,
+    -1,
+    0,
+    0, // Index: 11
+    // Face D       // Blue
     1,
     -1,
-    -1, // Index: 12
+    -1,
+    0,
+    0,
     1,
     1,
-    -1, // Index: 13
+    0,
+    0, // Index: 12
     1,
-    1,
-    1, // Index: 14
     1,
     -1,
-    1, // Index: 15
-    // Face E
-    -1,
-    -1,
-    -1, // Index: 16
-    -1,
-    -1,
-    1, // Index: 17
-    1,
-    -1,
-    1, // Index: 18
-    1,
-    -1,
-    -1, // Index: 19
-    // Face F
-    -1,
-    1,
-    -1, // Index: 20
-    -1,
-    1,
-    1, // Index: 21
+    0,
+    0,
     1,
     1,
-    1, // Index: 22
+    0,
+    0, // Index: 13
     1,
     1,
-    -1, // Index: 23
+    1,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0, // Index: 14
+    1,
+    -1,
+    1,
+    0,
+    0,
+    1,
+    1,
+    0,
+    0, // Index: 15
+    // Face E       // Orange
+    -1,
+    -1,
+    -1,
+    1,
+    0.5,
+    0,
+    0,
+    -1,
+    0, // Index: 16
+    -1,
+    -1,
+    1,
+    1,
+    0.5,
+    0,
+    0,
+    -1,
+    0, // Index: 17
+    1,
+    -1,
+    1,
+    1,
+    0.5,
+    0,
+    0,
+    -1,
+    0, // Index: 18
+    1,
+    -1,
+    -1,
+    1,
+    0.5,
+    0,
+    0,
+    -1,
+    0, // Index: 19
+    // Face F       // White
+    -1,
+    1,
+    -1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0, // Index: 20
+    -1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0, // Index: 21
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0, // Index: 22
+    1,
+    1,
+    -1,
+    1,
+    1,
+    1,
+    0,
+    1,
+    0, // Index: 23
   ];
+  // var vertices = [
+  //   // Face A
+  //   -1,
+  //   -1,
+  //   -1, // Index:  0
+  //   1,
+  //   -1,
+  //   -1, // Index:  1
+  //   1,
+  //   1,
+  //   -1, // Index:  2
+  //   -1,
+  //   1,
+  //   -1, // Index:  3
+  //   // Face B
+  //   -1,
+  //   -1,
+  //   1, // Index:  4
+  //   1,
+  //   -1,
+  //   1, // Index:  5
+  //   1,
+  //   1,
+  //   1, // Index:  6
+  //   -1,
+  //   1,
+  //   1, // Index:  7
+  //   // Face C
+  //   -1,
+  //   -1,
+  //   -1, // Index:  8
+  //   -1,
+  //   1,
+  //   -1, // Index:  9
+  //   -1,
+  //   1,
+  //   1, // Index: 10
+  //   -1,
+  //   -1,
+  //   1, // Index: 11
+  //   // Face D
+  //   1,
+  //   -1,
+  //   -1, // Index: 12
+  //   1,
+  //   1,
+  //   -1, // Index: 13
+  //   1,
+  //   1,
+  //   1, // Index: 14
+  //   1,
+  //   -1,
+  //   1, // Index: 15
+  //   // Face E
+  //   -1,
+  //   -1,
+  //   -1, // Index: 16
+  //   -1,
+  //   -1,
+  //   1, // Index: 17
+  //   1,
+  //   -1,
+  //   1, // Index: 18
+  //   1,
+  //   -1,
+  //   -1, // Index: 19
+  //   // Face F
+  //   -1,
+  //   1,
+  //   -1, // Index: 20
+  //   -1,
+  //   1,
+  //   1, // Index: 21
+  //   1,
+  //   1,
+  //   1, // Index: 22
+  //   1,
+  //   1,
+  //   -1, // Index: 23
+  // ];
   console.log("vertices: " + vertices.length);
   var indices = [
     0,
@@ -344,14 +568,22 @@ function main(params) {
   // Vertex shader
   var vertexShaderCode = `
 attribute vec3 aPosition; 
+attribute vec3 aColor;
+attribute vec3 aNormal;
 uniform mat4 uTShape; 
 uniform mat4 uModel;
 uniform mat4 uMatrix;
 uniform mat4 uView;
 uniform mat4 uProjection;
 varying vec3 vColor;
+varying vec3 vNormal;
+varying vec3 vPosition;
 void main() {
     gl_Position = uProjection * uView * uModel * uMatrix * vec4(aPosition, 1.0);
+    vColor = aColor;
+    vNormal = aNormal;
+    //store th vertex position
+    vPosition = (uModel * vec4(aPosition, 1.0)).xyz;
 }
 `;
   var vertexShaderObject = gl.createShader(gl.VERTEX_SHADER);
@@ -361,11 +593,45 @@ void main() {
   // Fragment shader
   var fragmentShaderCode = `
   precision mediump float;
+  varying vec3 vColor;
+  uniform vec3 uLightConstant;        // merepresentasikan warna sumber cahaya
+  uniform float uAmbientIntensity;    // merepresentasikan intensitas cahaya sekitar
+  varying vec3 vNormal;
+  varying vec3 vPosition;             // titik fragmen
+  uniform vec3 uLightPosition;        // titik lokasi sumber cahaya
+  uniform vec3 uViewerPosition;       // titik lokasi mata atau kamera pengamat
+  uniform mat3 uNormalModel;
   void main(){
-    float r = 1.0;
-    float g = 1.0;
-    float b = 1.0;
-    gl_FragColor = vec4(r , g, b, 1.0);
+    // ambient is k*i
+    vec3 ambient = uLightConstant * uAmbientIntensity;
+    vec3 lightRay = vPosition - uLightPosition;
+    // reflected cause we calaculated the light from v to l/kebalik
+    vec3 normalizedLight = normalize(-lightRay);
+    vec3 normalizedNormal = normalize(uNormalModel * vNormal);
+    float cosTheta = dot(normalizedNormal, normalizedLight);
+    vec3 diffuse = vec3(0.0, 0.0, 0.0);
+    if (cosTheta > 0.0) {
+        float diffuseIntensity = cosTheta;
+        // diffuse is (light . normal) * k
+        diffuse = uLightConstant * diffuseIntensity;
+    }
+    // spec is k * (reflector . viewer)^shininess
+    vec3 normalizedReflector = normalize(reflect(lightRay, normalizedNormal));
+    vec3 normalizedViewer = normalize(uViewerPosition - vPosition);
+    float cosPhi = dot(normalizedReflector, normalizedViewer);
+    vec3 specular = vec3(0.0, 0.0, 0.0);
+    if (cosPhi > 0.0) {
+        float shininessConstant = 100.0;    // batas minimum spesifikasi spekular untuk materi logam
+        float specularIntensity = pow(cosPhi, shininessConstant);
+        specular = uLightConstant * specularIntensity;
+    }
+    // phong thing
+    vec3 phong = ambient + diffuse + specular;
+    gl_FragColor = vec4(phong, 1.0);
+    // float r = 1.0;
+    // float g = 1.0;
+    // float b = 1.0;
+    // gl_FragColor = vec4(r , g, b, 1.0);
   }`;
   var fragmentShaderObject = gl.createShader(gl.FRAGMENT_SHADER);
   gl.shaderSource(fragmentShaderObject, fragmentShaderCode);
@@ -401,19 +667,17 @@ void main() {
   // perspective(out, fovy, aspect, near, far)
   glMatrix.mat4.perspective(perspective, degToRad(75), 1.0, 0.5, 50.0);
 
-  // Kita mengajari GPU bagaimana caranya mengoleksi
-  //  nilai posisi dari ARRAY_BUFFER
-  //  untuk setiap verteks yang sedang diproses
-  // var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
-  // gl.vertexAttribPointer(
-  //   aPosition,
-  //   3,
-  //   gl.FLOAT,
-  //   false,
-  //   3 * Float32Array.BYTES_PER_ELEMENT,
-  //   0
-  // );
-  // gl.enableVertexAttribArray(aPosition);
+  var aPosition = gl.getAttribLocation(shaderProgram, "aPosition");
+  gl.vertexAttribPointer(
+    aPosition,
+    3,
+    gl.FLOAT,
+    false,
+    9 * Float32Array.BYTES_PER_ELEMENT,
+    0
+  );
+  gl.enableVertexAttribArray(aPosition);
+
   const shape = new Shape(gl, shaderProgram);
   const shape2 = new Shape(gl, shaderProgram);
   var triangles = [+0.5, -0.5, 0.0, 0.25, +0.5, 0.0];
@@ -444,10 +708,10 @@ void main() {
     gl.uniformMatrix4fv(uProjection, false, perspective);
     // console.log(shapeT);
     if (wkey) {
-      delta[1] += 0.01;
+      delta[2] += 0.01;
     }
     if (skey) {
-      delta[1] -= 0.01;
+      delta[2] -= 0.01;
     }
     if (dkey) {
       delta[0] += 0.01;
@@ -488,7 +752,8 @@ void main() {
     // Rotasikan objek alfabet pertama terhadap sumbu Y dengan kecepatan sudut bebas (kalian tentukan sendiri) ketika tombol kiri atau kanan pada keyboard ditekan.
     // Rotasikan objek alfabet kedua terhadap sumbu X dengan kecepatan sudut bebas (kalian tentukan sendiri) ketika tombol atas atau bawah pada keyboard ditekan.
 
-    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), "rotxs", delta[0]);
+    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(shapeT), "rotxs");
+
     // shape2.drawA(
     //   gl.TRIANGLE_FAN,
     //   new Float32Array(shapeO),
@@ -497,18 +762,18 @@ void main() {
     //   val2,
     //   0
     // );
-    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(box), "rotx", delta[0]);
+
+    shape.setLight();
     shape2.drawA(
       gl.LINES,
       new Float32Array(shape8),
-      "scales",
-      theta,
+      "translate",
       0,
-      0,
-      0,
-      val
+      delta[0],
+      delta[1],
+      delta[2]
     );
-
+    shape.drawA(gl.TRIANGLE_FAN, new Float32Array(box));
     // shape2.drawA(gl.LINES, new Float32Array(shape0), "roty", delta[1]);
 
     requestAnimationFrame(render);
@@ -566,47 +831,47 @@ let akey = false;
 let dkey = false;
 // w
 function onKeyWUp(event) {
-  if (event.keyCode == 38) {
+  if (event.keyCode == 38 || event.keyCode == 73) {
     wkey = !wkey;
   }
 }
 // w
 function onKeyWDown(event) {
-  if (event.keyCode == 40) {
+  if (event.keyCode == 40 || event.keyCode == 73) {
     wkey = !wkey;
   }
 }
 // s
 function onKeySUp(event) {
-  if (event.keyCode == 40) {
+  if (event.keyCode == 40 || event.keyCode == 75) {
     skey = !skey;
   }
 }
 function onKeySDown(event) {
-  if (event.keyCode == 83) {
+  if (event.keyCode == 83 || event.keyCode == 75) {
     skey = !skey;
   }
 }
 // a
 function onKeyAUp(event) {
-  if (event.keyCode == 37) {
+  if (event.keyCode == 37 || event.keyCode == 74) {
     akey = !akey;
   }
 }
 // a
 function onKeyADown(event) {
-  if (event.keyCode == 37) {
+  if (event.keyCode == 37 || event.keyCode == 74) {
     akey = !akey;
   }
 }
 // d
 function onKeyDUp(event) {
-  if (event.keyCode == 39) {
+  if (event.keyCode == 39 || event.keyCode == 76) {
     dkey = !dkey;
   }
 }
 function onKeyDDown(event) {
-  if (event.keyCode == 39) {
+  if (event.keyCode == 39 || event.keyCode == 76) {
     dkey = !dkey;
   }
 }

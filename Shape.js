@@ -17,12 +17,13 @@ class Shape {
     scaleValue
   ) {
     var n = this.initBuffers(vertices);
+
     if (n < 0) {
       console.log("Failed to set the positions of the vertices");
       return;
     }
 
-    for (let index = 0; index < n; index = index + 4) {
+    for (let index = 0; index < n; index = index + 3) {
       this.gl.drawArrays(type, index, 4);
     }
 
@@ -54,8 +55,36 @@ class Shape {
     this.gl.uniformMatrix4fv(yoddle, false, test);
   }
 
+  setLight() {
+    // var aNormal = gl.getAttribLocation(shaderProgram, "aNormal");
+    // gl.vertexAttribPointer(
+    //   aNormal,
+    //   3,
+    //   gl.FLOAT,
+    //   false,
+    //   9 * Float32Array.BYTES_PER_ELEMENT,
+    //   6 * Float32Array.BYTES_PER_ELEMENT
+    // );
+    // gl.enableVertexAttribArray(aNormal);
+
+    var uLightConstant = this.gl.getUniformLocation(
+      this.shaderProgram,
+      "uLightConstant"
+    );
+    var uAmbientIntensity = this.gl.getUniformLocation(
+      this.shaderProgram,
+      "uAmbientIntensity"
+    );
+    var uLightPosition = this.gl.getUniformLocation(
+      this.shaderProgram,
+      "uLightPosition"
+    );
+    this.gl.uniform3fv(uLightPosition, [1.0, 1.0, 1.0]);
+    this.gl.uniform3fv(uLightConstant, [1.0, 1.0, 1.0]); // warna sumber cahaya: oranye
+    this.gl.uniform1f(uAmbientIntensity, 0.08);
+  }
   initBuffers(vertices) {
-    var n = (vertices.length / 72) * 24;
+    var n = (vertices.length / 240) * 24;
 
     var vertexBuffer = this.gl.createBuffer();
     if (!vertexBuffer) {
@@ -80,7 +109,36 @@ class Shape {
       3 * Float32Array.BYTES_PER_ELEMENT,
       0
     );
+
     this.gl.enableVertexAttribArray(aPosition);
+
+    var aNormal = this.gl.getAttribLocation(this.shaderProgram, "aNormal");
+    this.gl.vertexAttribPointer(
+      aNormal,
+      3,
+      this.gl.FLOAT,
+      false,
+      9 * Float32Array.BYTES_PER_ELEMENT,
+      6 * Float32Array.BYTES_PER_ELEMENT
+    );
+    this.gl.enableVertexAttribArray(aNormal);
+
+    var uLightConstant = this.gl.getUniformLocation(
+      this.shaderProgram,
+      "uLightConstant"
+    );
+    var uAmbientIntensity = this.gl.getUniformLocation(
+      this.shaderProgram,
+      "uAmbientIntensity"
+    );
+    var uLightPosition = this.gl.getUniformLocation(
+      this.shaderProgram,
+      "uLightPosition"
+    );
+    this.gl.uniform3fv(uLightPosition, [1.0, 1.0, 1.0]);
+    this.gl.uniform3fv(uLightConstant, [1.0, 1.0, 1.0]); // warna sumber cahaya: oranye
+    this.gl.uniform1f(uAmbientIntensity, 0.308);
+
     return n;
   }
 }
